@@ -1,0 +1,479 @@
+---
+title: "Data Anlysis"
+author: "Richard Lim"
+date: '2022-10-04'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#loading necessary libraries
+library(tidyverse)
+```
+
+```{r}
+#Reading in subscription and visit data sets
+subscriptions <- read.csv("/Users/richardlim/Desktop/subscriptions.csv")
+visits <- read.csv("/Users/richardlim/Desktop/visits.csv")
+#combining data sets by "account_id"
+total <- merge(subscriptions, visits, by = "account_id")
+```
+
+## Question 1: How much revenue did each region generate within the time frame covered by the data sets?
+```{r}
+#replacing na values with )
+total[is.na(total)] <- 0
+
+#showing different regions
+#table(total$region)
+
+#Isolating by Regions
+northAmerica <- total[total$region == "US/Canada", ]
+cat("US/Canda total revenue:", sum(northAmerica$revenue), "\n")
+
+asia <- total[total$region == "Asia", ]
+cat("Asia total revenue:", sum(asia$revenue),"\n")
+
+latinAmerica <- total[total$region == "Latin America", ]
+cat("Latin America total revenue:", sum(latinAmerica$revenue),"\n")
+
+EU_ME_A <- total[total$region == "Europe, Middle East, & Africa (Non-English)", ]
+cat("Europe, Middle East, & Africa (Non-English) total revenue:", sum(EU_ME_A$revenue),"\n")
+
+english_speaking <- total[total$region == "Other English-Speaking Countries", ]
+cat("Other English-Speaking Countries total revenue:", sum(english_speaking$revenue),"\n")
+
+```
+
+## Question 2: Which channel had the highest revenue per visit? What was its revenue per visit?
+```{r}
+#showing different channels and number of visits
+#table(total$channel)
+
+#isolating channel when entry is "display"
+display <- total[total$channel == "display", ]
+#calculating revenue per visit by adding all revenue and dividing by total visits
+display_revenue_per_visit <- (sum(display$revenue) / 1202)
+cat("Revenue per visit for Display channel:", display_revenue_per_visit, "\n")
+
+email <- total[total$channel == "email",]
+email_revenue_per_visit <- (sum(email$revenue) / 887)
+cat("Revenue per visit for Email channel:", email_revenue_per_visit, "\n")
+
+organic_search <- total[total$channel == "organic search",]
+osearch_revenue_per_visit <- (sum(organic_search$revenue) / 4029)
+cat("Revenue per visit for Organic Search channel:", osearch_revenue_per_visit, "\n")
+
+paid_search <- total[total$channel == "paid search", ]
+psearch_revenue_per_visit <- (sum(paid_search$revenue)/ 3324)
+cat("Revenue per visit for Paid Search channel:", psearch_revenue_per_visit, "\n")
+
+parter_referral <- total[total$channel == "partner referral", ]
+pReferral_revenue_per_visit <- (sum(parter_referral$revenue)/ 1700)
+cat("Revenue per visit for Partner Referral channel:", pReferral_revenue_per_visit, "\n")
+
+social <- total[total$channel == "social", ]
+social_revenue_per_visit <- (sum(social$revenue)/ 199)
+cat("Revenue per visit for Social channel:", social_revenue_per_visit, "\n")
+
+video <- total[total$channel == "video", ]
+video_revenue_per_visit <- (sum(video$revenue)/ 2271)
+cat("Revenue per visit for Social channel:", video_revenue_per_visit, "\n")
+
+cat("The channel that had the highest revenue per visit was Display with a revenue per visit of", display_revenue_per_visit)
+```
+
+## Question 3: Which landing page had the highest overall conversion rate (% of visitors that go on to become paying subscribers)? What was its conversion rate?
+```{r}
+#showing different landing pages and number of users who went to each
+#table(total$landing_page)
+
+#isolating A values from landing_page
+A_page <- total[total$landing_page == "A", ]
+#getting rid of people without subscriptions from A landing page 
+A_subscriptions <- A_page[!(A_page$subscription_start_date==""), ]
+#calculating conversion rate
+A_conversion_rate <- 100 * (count(A_subscriptions) / count(A_page))
+cat("Conversion rate for Landing page A is:", toString(A_conversion_rate), "\n")
+
+B_page <- total[total$landing_page == "B", ]
+B_subscriptions <- B_page[!(B_page$subscription_start_date==""), ]
+B_conversion_rate <- 100 * (count(B_subscriptions) / count(B_page))
+cat("Conversion rate for Landing page B is:", toString(B_conversion_rate), "\n")
+
+C_page <- total[total$landing_page == "C", ]
+C_subscriptions <- C_page[!(C_page$subscription_start_date==""), ]
+C_conversion_rate <- 100 * (count(C_subscriptions) / count(C_page))
+cat("Conversion rate for Landing page C is:", toString(C_conversion_rate), "\n")
+
+D_page <- total[total$landing_page == "D", ]
+D_subscriptions <- D_page[!(D_page$subscription_start_date==""), ]
+D_conversion_rate <- 100 * (count(D_subscriptions) / count(D_page))
+cat("Conversion rate for Landing page D is:", toString(D_conversion_rate), "\n")
+
+E_page <- total[total$landing_page == "E", ]
+E_subscriptions <- E_page[!(E_page$subscription_start_date==""), ]
+E_conversion_rate <- 100 * (count(E_subscriptions) / count(E_page))
+cat("Conversion rate for Landing page E is:", toString(E_conversion_rate), "\n")
+
+F_page <- total[total$landing_page == "F", ]
+F_subscriptions <- F_page[!(F_page$subscription_start_date==""), ]
+F_conversion_rate <- 100 * (count(F_subscriptions) / count(F_page))
+cat("Conversion rate for Landing page F is:", toString(F_conversion_rate), "\n")
+
+G_page <- total[total$landing_page == "G", ]
+G_subscriptions <- G_page[!(G_page$subscription_start_date==""), ]
+G_conversion_rate <- 100 * (count(G_subscriptions) / count(G_page))
+cat("Conversion rate for Landing page G is:", toString(G_conversion_rate), "\n")
+
+H_page <- total[total$landing_page == "H", ]
+H_subscriptions <- H_page[!(H_page$subscription_start_date==""), ]
+H_conversion_rate <- 100 * (count(H_subscriptions) / count(H_page))
+cat("Conversion rate for Landing page H is:", toString(H_conversion_rate), "\n")
+
+I_page <- total[total$landing_page == "I", ]
+I_subscriptions <- I_page[!(I_page$subscription_start_date==""), ]
+I_conversion_rate <- 100 * (count(I_subscriptions) / count(I_page))
+cat("Conversion rate for Landing page I is:", toString(I_conversion_rate), "\n")
+
+J_page <- total[total$landing_page == "J", ]
+J_subscriptions <- J_page[!(J_page$subscription_start_date==""), ]
+J_conversion_rate <- 100 * (count(J_subscriptions) / count(J_page))
+cat("Conversion rate for Landing page J is:", toString(J_conversion_rate), "\n")
+
+cat("Landing page H had the highest conversion rate with a rate of", toString(H_conversion_rate))
+```
+
+## Question 4: Did any regions have a different top converting landing page (as compared to the previous answer)? If so, please list them along with their top landing page and its conversion rate.
+```{r}
+###############
+# Asia Region #
+###############
+
+#isolating Asia region from all A Landing Page
+asia_A_page <- A_page[A_page$region == "Asia", ]; #toString(count(asia_A_page))
+#people with subscriptions from Asia region from A landing page
+asia_A_subscriptions <- asia_A_page[!(asia_A_page$subscription_start_date==""), ]; #toString(count(asia_A_subscriptions))
+cat("Asia's conversion rate for landing page A is", 100 * 149 / 241, "\n")
+
+asia_B_page <- B_page[B_page$region == "Asia", ]; #toString(count(asia_B_page))
+asia_B_subscriptions <- asia_B_page[!(asia_B_page$subscription_start_date==""), ]; #toString(count(asia_B_subscriptions))
+cat("Asia's conversion rate for landing page B is", 100 * 197 / 324, "\n")
+
+asia_C_page <- C_page[C_page$region == "Asia", ]; #toString(count(asia_C_page))
+asia_C_subscriptions <- asia_C_page[!(asia_C_page$subscription_start_date==""), ]; #toString(count(asia_C_subscriptions))
+cat("Asia's conversion rate for landing page C is", 100 * 121 / 198, "\n")
+
+asia_D_page <- D_page[D_page$region == "Asia", ]; #toString(count(asia_D_page))
+asia_D_subscriptions <- asia_D_page[!(asia_D_page$subscription_start_date==""), ]; #toString(count(asia_D_subscriptions))
+cat("Asia's conversion rate for landing page D is", 100 * 183 / 311, "\n")
+
+asia_E_page <- E_page[E_page$region == "Asia", ]; #toString(count(asia_E_page))
+asia_E_subscriptions <- asia_E_page[!(asia_E_page$subscription_start_date==""), ]; #toString(count(asia_E_subscriptions))
+cat("Asia's conversion rate for landing page E is", 100 * 468 / 732, "\n")
+
+asia_F_page <- F_page[F_page$region == "Asia", ]; #toString(count(asia_F_page))
+asia_F_subscriptions <- asia_F_page[!(asia_F_page$subscription_start_date==""), ]; #toString(count(asia_F_subscriptions))
+cat("Asia's conversion rate for landing page F is", 100 * 65 / 101, "\n")
+
+asia_G_page <- G_page[G_page$region == "Asia", ]; #toString(count(asia_G_page))
+asia_G_subscriptions <- asia_G_page[!(asia_G_page$subscription_start_date==""), ]; #toString(count(asia_G_subscriptions))
+cat("Asia's conversion rate for landing page G is", 100 * 150 / 236, "\n")
+
+asia_H_page <- H_page[H_page$region == "Asia", ]; #toString(count(asia_H_page))
+asia_H_subscriptions <- asia_H_page[!(asia_H_page$subscription_start_date==""), ]; #toString(count(asia_H_subscriptions))
+cat("Asia's conversion rate for landing page H is", 100 * 82 / 118, "\n")
+
+asia_I_page <- I_page[I_page$region == "Asia", ]; #toString(count(asia_I_page))
+asia_I_subscriptions <- asia_I_page[!(asia_I_page$subscription_start_date==""), ]; #toString(count(asia_I_subscriptions))
+cat("Asia's conversion rate for landing page I is", 100 * 191 / 306, "\n")
+
+asia_J_page <- J_page[J_page$region == "Asia", ]; #toString(count(asia_J_page))
+asia_J_subscriptions <- asia_J_page[!(asia_J_page$subscription_start_date==""), ]; #toString(count(asia_J_subscriptions))
+cat("Asia's conversion rate for landing page J is", 100 * 153 / 269, "\n")
+print("Landing Page H still has the highest conversion rate for Asia")
+```
+
+```{r}
+#################
+# Latin America #
+#################
+
+#isolating Latin America region from all A Landing Page
+la_A_page <- A_page[A_page$region == "Latin America", ]; #toString(count(la_A_page))
+#people with subscriptions from Asia region from A landing page
+la_A_subscriptions <- la_A_page[!(la_A_page$subscription_start_date==""), ]; #toString(count(la_A_subscriptions))
+cat("Latin America's conversion rate for landing page A is", 100 * 253 / 376, "\n")
+
+la_B_page <- B_page[B_page$region == "Latin America", ]; #toString(count(la_B_page))
+la_B_subscriptions <- la_B_page[!(la_B_page$subscription_start_date==""), ]; #toString(count(la_B_subscriptions))
+cat("Latin America's conversion rate for landing page B is", 100 * 274 / 460, "\n")
+
+la_C_page <- C_page[C_page$region == "Latin America", ]; #toString(count(la_C_page))
+la_C_subscriptions <- la_C_page[!(la_C_page$subscription_start_date==""), ]; #toString(count(la_C_subscriptions))
+cat("Latin America's conversion rate for landing page C is", 100 * 163 / 247, "\n")
+
+la_D_page <- D_page[D_page$region == "Latin America", ]; #toString(count(la_D_page))
+la_D_subscriptions <- la_D_page[!(la_D_page$subscription_start_date==""), ]; #toString(count(la_D_subscriptions))
+cat("Latin America's conversion rate for landing page D is", 100 * 304 / 491, "\n")
+
+la_E_page <- E_page[E_page$region == "Latin America", ]; #toString(count(la_E_page))
+la_E_subscriptions <- la_E_page[!(la_E_page$subscription_start_date==""), ]; #toString(count(la_E_subscriptions))
+cat("Latin America's conversion rate for landing page E is", 100 * 435 / 628, "\n")
+
+la_F_page <- F_page[F_page$region == "Latin America", ]; #toString(count(la_F_page))
+la_F_subscriptions <- la_F_page[!(la_F_page$subscription_start_date==""), ]; #toString(count(la_F_subscriptions))
+cat("Latin America's conversion rate for landing page F is", 100 * 65 / 108, "\n")
+
+la_G_page <- G_page[G_page$region == "Latin America", ]; #toString(count(la_G_page))
+la_G_subscriptions <- la_G_page[!(la_G_page$subscription_start_date==""), ]; #toString(count(la_G_subscriptions))
+cat("Latin America's conversion rate for landing page G is", 100 * 136 / 201, "\n")
+
+la_H_page <- H_page[H_page$region == "Latin America", ]; #toString(count(la_H_page))
+la_H_subscriptions <- la_H_page[!(la_H_page$subscription_start_date==""), ]; #toString(count(la_H_subscriptions))
+cat("Latin America's conversion rate for landing page H is", 100 * 123 / 189, "\n")
+
+la_I_page <- I_page[I_page$region == "Latin America", ]; #toString(count(la_I_page))
+la_I_subscriptions <- la_I_page[!(la_I_page$subscription_start_date==""), ]; #toString(count(la_I_subscriptions))
+cat("Latin America's conversion rate for landing page I is", 100 * 204 / 298, "\n")
+
+la_J_page <- J_page[J_page$region == "Latin America", ]; #toString(count(la_J_page))
+la_J_subscriptions <- la_J_page[!(la_J_page$subscription_start_date==""), ]; #toString(count(la_J_subscriptions))
+cat("Latin America's conversion rate for landing page J is", 100 * 182 / 320, "\n")
+print("Landing page E has the highest conversion rate with a rate of 69.26752 for Latin America")
+```
+
+```{r}
+#############
+# US/Canada #
+#############
+
+#isolating US/Canada region from all A Landing Page
+na_A_page <- A_page[A_page$region == "US/Canada", ]; #toString(count(na_A_page))
+#people with subscriptions from Asia region from A landing page
+na_A_subscriptions <- na_A_page[!(na_A_page$subscription_start_date==""), ]; #toString(count(na_A_subscriptions))
+cat("US/Canada's conversion rate for landing page A is", 100 * 160 / 265, "\n")
+
+na_B_page <- B_page[B_page$region == "US/Canada", ]; #toString(count(na_B_page))
+na_B_subscriptions <- na_B_page[!(na_B_page$subscription_start_date==""), ]; #toString(count(na_B_subscriptions))
+cat("US/Canada's conversion rate for landing page B is", 100 * 157 / 308, "\n")
+
+na_C_page <- C_page[C_page$region == "US/Canada", ]; #toString(count(na_C_page))
+na_C_subscriptions <- na_C_page[!(na_C_page$subscription_start_date==""), ]; #toString(count(na_C_subscriptions))
+cat("US/Canada's conversion rate for landing page C is", 100 * 136 / 249, "\n")
+
+na_D_page <- D_page[D_page$region == "US/Canada", ]; #toString(count(na_D_page))
+na_D_subscriptions <- na_D_page[!(na_D_page$subscription_start_date==""), ]; #toString(count(na_D_subscriptions))
+cat("US/Canada's conversion rate for landing page D is", 100 * 175 / 334, "\n")
+
+na_E_page <- E_page[E_page$region == "US/Canada", ]; #toString(count(na_E_page))
+na_E_subscriptions <- na_E_page[!(na_E_page$subscription_start_date==""), ]; #toString(count(na_E_subscriptions))
+cat("US/Canada's conversion rate for landing page E is", 100 * 425 / 784, "\n")
+
+na_F_page <- F_page[F_page$region == "US/Canada", ]; #toString(count(na_F_page))
+na_F_subscriptions <- na_F_page[!(na_F_page$subscription_start_date==""), ]; #toString(count(na_F_subscriptions))
+cat("US/Canada's conversion rate for landing page F is", 100 * 47 / 96, "\n")
+
+na_G_page <- G_page[G_page$region == "US/Canada", ]; #toString(count(na_G_page))
+na_G_subscriptions <- na_G_page[!(na_G_page$subscription_start_date==""), ]; #toString(count(na_G_subscriptions))
+cat("US/Canada's conversion rate for landing page G is", 100 * 149 / 246, "\n")
+
+na_H_page <- H_page[H_page$region == "US/Canada", ]; #toString(count(na_H_page))
+na_H_subscriptions <- na_H_page[!(na_H_page$subscription_start_date==""), ]; #toString(count(na_H_subscriptions))
+cat("US/Canada's conversion rate for landing page H is", 100 * 115 / 167, "\n")
+
+na_I_page <- I_page[I_page$region == "US/Canada", ]; #toString(count(na_I_page))
+na_I_subscriptions <- na_I_page[!(na_I_page$subscription_start_date==""), ]; #toString(count(na_I_subscriptions))
+cat("US/Canada's conversion rate for landing page I is", 100 * 178 / 322, "\n")
+
+na_J_page <- J_page[J_page$region == "US/Canada", ]; #toString(count(na_J_page))
+na_J_subscriptions <- na_J_page[!(na_J_page$subscription_start_date==""), ]; #toString(count(na_J_subscriptions))
+cat("US/Canada's conversion rate for landing page J is", 100 * 151 / 265, "\n")
+
+print("Landing Page H still has the highest conversion rate for US/Canada")
+```
+
+```{r}
+###############################################
+# Europe, Middle East, & Africa (Non-English) #
+###############################################
+
+#isolating Europe, Middle East, & Africa (Non-English) region from all A Landing Page
+eu_A_page <- A_page[A_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_A_page))
+#people with subscriptions from Asia region from A landing page
+eu_A_subscriptions <- eu_A_page[!(eu_A_page$subscription_start_date==""), ]; #toString(count(eu_A_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page A is", 100 * 215 / 339, "\n")
+
+eu_B_page <- B_page[B_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_B_page))
+eu_B_subscriptions <- eu_B_page[!(eu_B_page$subscription_start_date==""), ]; #toString(count(eu_B_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page B is", 100 * 155 / 283, "\n")
+
+eu_C_page <- C_page[C_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_C_page))
+eu_C_subscriptions <- eu_C_page[!(eu_C_page$subscription_start_date==""), ]; #toString(count(eu_C_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page C is", 100 * 116 / 200, "\n")
+
+eu_D_page <- D_page[D_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_D_page))
+eu_D_subscriptions <- eu_D_page[!(eu_D_page$subscription_start_date==""), ]; #toString(count(eu_D_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page D is", 100 * 168 / 296, "\n")
+
+eu_E_page <- E_page[E_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_E_page))
+eu_E_subscriptions <- eu_E_page[!(eu_E_page$subscription_start_date==""), ]; #toString(count(eu_E_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page E is", 100 * 243 / 423, "\n")
+
+eu_F_page <- F_page[F_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_F_page))
+eu_F_subscriptions <- eu_F_page[!(eu_F_page$subscription_start_date==""), ]; #toString(count(eu_F_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page F is", 100 * 37 / 68, "\n")
+
+eu_G_page <- G_page[G_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_G_page))
+eu_G_subscriptions <- eu_G_page[!(eu_G_page$subscription_start_date==""), ]; #toString(count(eu_G_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page G is", 100 * 78 / 136, "\n")
+
+eu_H_page <- H_page[H_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_H_page))
+eu_H_subscriptions <- eu_H_page[!(eu_H_page$subscription_start_date==""), ]; #toString(count(eu_H_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page H is", 100 * 103 / 166, "\n")
+
+eu_I_page <- I_page[I_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_I_page))
+eu_I_subscriptions <- eu_I_page[!(eu_I_page$subscription_start_date==""), ]; #toString(count(eu_I_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page I is", 100 * 131 / 211, "\n")
+
+eu_J_page <- J_page[J_page$region == "Europe, Middle East, & Africa (Non-English)", ]; #toString(count(eu_J_page))
+eu_J_subscriptions <- eu_J_page[!(eu_J_page$subscription_start_date==""), ]; #toString(count(eu_J_subscriptions))
+cat("Europe, Middle East, & Africa (Non-English)'s conversion rate for landing page J is", 100 * 160 / 247, "\n")
+
+print("Landing page J has the highest conversion rate with a rate of 64.77733 for Europe, Middle East, & Africa (Non-English)")
+```
+
+```{r}
+####################################
+# Other English-Speaking Countries #
+####################################
+
+#isolating Other English-Speaking Countries region from all A Landing Page
+es_A_page <- A_page[A_page$region == "Other English-Speaking Countries", ]; #toString(count(es_A_page))
+#people with subscriptions from Asia region from A landing page
+es_A_subscriptions <- es_A_page[!(es_A_page$subscription_start_date==""), ]; #toString(count(es_A_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page A is", 100 * 143 / 248, "\n")
+
+es_B_page <- B_page[B_page$region == "Other English-Speaking Countries", ]; #toString(count(es_B_page))
+es_B_subscriptions <- es_B_page[!(es_B_page$subscription_start_date==""), ]; #toString(count(es_B_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page B is", 100 * 127 / 243, "\n")
+
+es_C_page <- C_page[C_page$region == "Other English-Speaking Countries", ]; #toString(count(es_C_page))
+es_C_subscriptions <- es_C_page[!(es_C_page$subscription_start_date==""), ]; #toString(count(es_C_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page C is", 100 * 107 / 202, "\n")
+
+es_D_page <- D_page[D_page$region == "Other English-Speaking Countries", ]; #toString(count(es_D_page))
+es_D_subscriptions <- es_D_page[!(es_D_page$subscription_start_date==""), ]; #toString(count(es_D_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page D is", 100 * 177 / 319, "\n")
+
+es_E_page <- E_page[E_page$region == "Other English-Speaking Countries", ]; #toString(count(es_E_page))
+es_E_subscriptions <- es_E_page[!(es_E_page$subscription_start_date==""), ]; #toString(count(es_E_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page E is", 100 * 266 / 439, "\n")
+
+es_F_page <- F_page[F_page$region == "Other English-Speaking Countries", ]; #toString(count(es_F_page))
+es_F_subscriptions <- es_F_page[!(es_F_page$subscription_start_date==""), ]; #toString(count(es_F_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page F is", 100 * 54 / 91, "\n")
+
+es_G_page <- G_page[G_page$region == "Other English-Speaking Countries", ]; #toString(count(es_G_page))
+es_G_subscriptions <- es_G_page[!(es_G_page$subscription_start_date==""), ]; #toString(count(es_G_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page G is", 100 * 75 / 131, "\n")
+
+es_H_page <- H_page[H_page$region == "Other English-Speaking Countries", ]; #toString(count(es_H_page))
+es_H_subscriptions <- es_H_page[!(es_H_page$subscription_start_date==""), ]; #toString(count(es_H_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page H is", 100 * 85 / 133, "\n")
+
+es_I_page <- I_page[I_page$region == "Other English-Speaking Countries", ]; #toString(count(es_I_page))
+es_I_subscriptions <- es_I_page[!(es_I_page$subscription_start_date==""), ]; #toString(count(es_I_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page I is", 100 * 76 / 116, "\n")
+
+es_J_page <- J_page[J_page$region == "Other English-Speaking Countries", ]; #toString(count(es_J_page))
+es_J_subscriptions <- es_J_page[!(es_J_page$subscription_start_date==""), ]; #toString(count(es_J_subscriptions))
+cat("Other English-Speaking Countries's conversion rate for landing page J is", 100 * 73 / 131, "\n")
+
+print("Landing page I has the highest conversion rate with a rate of 65.51724 for Other English-Speaking Countries")
+```
+
+## Question 5: Which region had the highest direct subscription rate (% of visitors that start a subscription directly without doing a trial)? What was its direct subscription rate?
+```{r}
+#getting rid of people without subscriptions in US/Canada
+na_direct_sub <- northAmerica[!(northAmerica$subscription_start_date==""), ]; #toString(count(na_direct_sub))
+#getting rid of people who had trials from people with subscriptions in US/Canada
+na_direct_sub1 <- northAmerica[(northAmerica$trial_end_date==""), ]; #toString(count(na_direct_sub1))
+#calculating direct subscription rate by dividing # of people without subscriptions in the US/Canada region from # of people with subscriptions but without trials
+cat("US/Canada region has a direct subscription rate of", 100 * 880 / 1693, "\n")
+
+asia_direct_sub <- asia[!(asia$subscription_start_date==""), ]; #toString(count(asia_direct_sub))
+asia_direct_sub1 <- asia[(asia$trial_end_date==""), ]; #toString(count(asia_direct_sub1))
+cat("Asia region has a direct subscription rate of", 100 * 1042 / 1759, "\n")
+
+la_direct_sub <- latinAmerica[!(latinAmerica$subscription_start_date==""), ]; #toString(count(la_direct_sub))
+la_direct_sub1 <- latinAmerica[(latinAmerica$trial_end_date==""), ]; #toString(count(la_direct_sub1))
+cat("Latin America region has a direct subscription rate of", 100 * 1121 / 2139, "\n")
+
+eu_direct_sub <- EU_ME_A[!(EU_ME_A$subscription_start_date==""), ]; #toString(count(eu_direct_sub))
+eu_direct_sub1 <- EU_ME_A[(EU_ME_A$trial_end_date==""), ]; #toString(count(eu_direct_sub1))
+cat("Europe, Middle East, & Africa (Non-English) region has a direct subscription rate of", 100 * 629 / 1406, "\n")
+
+es_direct_sub <- english_speaking[!(english_speaking$subscription_start_date==""), ]; #toString(count(es_direct_sub))
+es_direct_sub1 <- english_speaking[(english_speaking$trial_end_date==""), ]; #toString(count(es_direct_sub1))
+cat("Other English-Speaking Countries region has a direct subscription rate of", 100 * 516 / 1183, "\n")
+
+print("Asia has the highest direct subscription rate with a rate of 59.2382%")
+```
+
+## Question 6: Which region had the highest trial start rate (% of visitors that start a trial, regardless of whether those users ultimately cancel or become paying subscribers)? What was its trial start rate?
+```{r}
+#taking total count of people in US/Canada region 
+#toString(count(northAmerica))
+#removing everyone who did not start a trial 
+na_trial <- northAmerica[!(northAmerica$trial_start_date==""),]; #toString(count(na_trial))
+cat("US/Canada region has a trial start rate of", 100 * 2156 / 3036, "\n")
+
+#toString(count(asia))
+asia_trial <- asia[!(asia$trial_start_date==""),]; #toString(count(asia_trial))
+cat("Asia region has a trial start rate of", 100 * 1794 / 2836, "\n")
+
+#toString(count(latinAmerica))
+la_trial <- latinAmerica[!(latinAmerica$trial_start_date==""),]; #toString(count(la_trial))
+cat("Latin America region has a trial start rate of", 100 * 2197 / 3318, "\n")
+
+#toString(count(EU_ME_A))
+eu_trial <- EU_ME_A[!(EU_ME_A$trial_start_date==""),]; #toString(count(eu_trial))
+cat("Europe, Middle East, & Africa (Non-English) region has a trial start rate of", 100 * 1740 / 2369, "\n")
+
+#toString(count(english_speaking))
+es_trial <- english_speaking[!(english_speaking$trial_start_date==""),]; #toString(count(es_trial))
+cat("Other English-Speaking Countries region has a trial start rate of", 100 * 1537 / 2053, "\n")
+
+print("Other English-Speaking Countries region had the highest trial start rate with a rate of 74.86605%")
+```
+
+## Question 7: Which region had the highest trial conversion rate (% of trials that start a subscription)? What was its trial conversion rate?
+```{r}
+#counting how many people in US/Canada region have a trial
+#toString(count(na_trial))
+#removing people who do not have a subscription from people in US/Canada region who have a trial and counting
+trial_conv_na <- na_trial[!(na_trial$subscription_start_date==""), ]; #toString(count(trial_conv_na))
+cat("US/Canada region has a trial conversion rate of", 100 * 813 / 2156, "\n")
+
+#toString(count(asia_trial))
+trial_conv_asia <- asia_trial[!(asia_trial$subscription_start_date==""), ];# toString(count(trial_conv_asia))
+cat("Asia region has a trial conversion rate of", 100 * 717 / 1794, "\n")
+
+#toString(count(la_trial))
+trial_conv_la <- la_trial[!(la_trial$subscription_start_date==""), ]; #toString(count(trial_conv_la))
+cat("Latin America region has a trial conversion rate of", 100 * 1018 / 2197, "\n")
+
+#toString(count(eu_trial))
+trial_conv_eu <- eu_trial[!(eu_trial$subscription_start_date==""), ]; #toString(count(trial_conv_eu))
+cat("Europe, Middle East, & Africa (Non-English) region has a trial conversion rate of", 100 * 777 / 1740, "\n")
+
+#toString(count(es_trial))
+trial_conv_es <- es_trial[!(es_trial$subscription_start_date==""), ]; #toString(count(trial_conv_es))
+cat("Other English-Speaking Countries region has a trial conversion rate of", 100 * 667 / 1537, "\n")
+
+print("Latin America has the highest trial conversion rate with a rate of 46.33591%")
+```
